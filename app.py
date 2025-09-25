@@ -1,11 +1,28 @@
-
 from flask import Flask, render_template, request, jsonify
+import base64
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), 'encrypt'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'decrypt'))
-from encrypt.shift_cipher import shift_cipher as shift_cipher_encrypt
-from decrypt.shift_cipher import shift_cipher_decrypt
+sys.path.append(os.path.join(os.path.dirname(__file__), 'cipher'))
+from cipher.shift_cipher import encrypt_shift_bytes
+from cipher.shift_cipher import decrypt_shift_bytes
+from cipher.shift_cipher import encrypt_shift_text
+from cipher.shift_cipher import decrypt_shift_text
+
+from cipher.subtitution_chipper import encrypt_substitution as encrypt_substitution_text
+from cipher.subtitution_chipper import decrypt_substitution as decrypt_substitution_text
+from cipher.subtitution_chipper import encrypt_bytes_file as encrypt_substitution_bytes
+from cipher.subtitution_chipper import decrypt_bytes_file as decrypt_substitution_bytes
+
+from cipher.affine_cipher import encrypt_affine_text
+from cipher.affine_cipher import decrypt_affine_text
+from cipher.affine_cipher import encrypt_affine_bytes
+from cipher.affine_cipher import decrypt_affine_bytes
+
+from cipher.permutation_chipper import encrypt_text as encrypt_permutation_text
+from cipher.permutation_chipper import decrypt_text as decrypt_permutation_text
+from cipher.permutation_chipper import encrypt_bytes as encrypt_permutation_bytes
+from cipher.permutation_chipper import decrypt_bytes as decrypt_permutation_bytes
+
 
 app = Flask(__name__)
 
@@ -14,38 +31,102 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
-def execute_cipher(function, text, key):
+def execute_cipher(function, text, key, is_bytes):
     mode = request.get_json(silent=True) and request.get_json().get('mode', 'encrypt')
+    # Convert key to correct type for bytes mode
+    if function == "shift-cipher":
+        try:
+            key = int(key)
+        except Exception:
+            pass
+    elif function == "substitution-cipher":
+        try:
+            key = int(key)
+        except Exception:
+            pass
+    elif function == "permutation-cipher":
+        if isinstance(key, str):
+            key = [int(x) for x in key.split(',') if x.strip()]
+    elif function == "affine-cipher":
+        if isinstance(key, str):
+            parts = key.split(',')
+            if len(parts) == 2:
+                try:
+                    key = (int(parts[0]), int(parts[1]))
+                except Exception:
+                    pass
     match function:
         case "shift-cipher":
-            if mode == 'decrypt':
-                return shift_cipher_decrypt(text, key)
+            if is_bytes:
+                if mode == 'decrypt':
+                    return decrypt_shift_bytes(text, key)
+                else:
+                    return encrypt_shift_bytes(text, key)
             else:
-                return shift_cipher_encrypt(text, key)
+                if mode == 'decrypt':
+                    return decrypt_shift_text(text, key)
+                else:
+                    return encrypt_shift_text(text, key)
         case "substitution-cipher":
-            return "Substitution cipher not implemented"
+            if is_bytes:
+                if mode == 'decrypt':
+                    return decrypt_substitution_bytes(text, key)
+                else:
+                    return encrypt_substitution_bytes(text, key)
+            else:
+                if mode == 'decrypt':
+                    return decrypt_substitution_text(text, key)
+                else:
+                    return encrypt_substitution_text(text, key)
+        case "permutation-cipher":
+            if is_bytes:
+                if mode == 'decrypt':
+                    return decrypt_permutation_bytes(text, key)
+                else:
+                    return encrypt_permutation_bytes(text, key)
+            else:
+                if mode == 'decrypt':
+                    return decrypt_permutation_text(text, key)
+                else:
+                    return encrypt_permutation_text(text, key)
         case "affine-cipher":
-            return "Affine cipher not implemented"
+            if is_bytes:
+                if mode == 'decrypt':
+                    return decrypt_affine_bytes(text, key)
+                else:
+                    return encrypt_affine_bytes(text, key)
+            else:
+                if mode == 'decrypt':
+                    return decrypt_affine_text(text, key)
+                else:
+                    return encrypt_affine_text(text, key)
         case "vigenere-cipher":
             return "Vigenère cipher not implemented"
         case "hill-cipher":
             return "Hill cipher not implemented"
-        case "permutation-cipher":
-            return "Permutation cipher not implemented"
         case _:
             return "Unknown cipher function"
         
+
 @app.route("/execute", methods=["POST"])
 def execute():
     data = request.get_json()
-    input_text = data.get("input_text", "")
     cipher_function = data.get("cipher_function", "shift-cipher")
     key = data.get("key", "")
 
-    # Execute cipher
-    output = execute_cipher(cipher_function, input_text, key)
-
-    return jsonify({"output_text": output})
+    # If input_bytes_b64 is present, treat as bytes (file mode)
+    if 'input_bytes_b64' in data:
+        input_bytes = base64.b64decode(data['input_bytes_b64'])
+        output_bytes = execute_cipher(cipher_function, input_bytes, key, is_bytes=True)
+        # If output is not bytes, convert to bytes
+        if isinstance(output_bytes, str):
+            output_bytes = output_bytes.encode('utf-8')
+        output_bytes_b64 = base64.b64encode(output_bytes).decode('utf-8')
+        return jsonify({"output_bytes_b64": output_bytes_b64})
+    else:
+        input_text = data.get("input_text", "")
+        output = execute_cipher(cipher_function, input_text, key, is_bytes=False)
+        return jsonify({"output_text": output})
 
 if __name__ == "__main__":
     app.run(debug=True)
