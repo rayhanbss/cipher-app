@@ -197,6 +197,9 @@
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
   }
+  .block {
+    display: block;
+  }
   .flex {
     display: flex;
   }
@@ -369,6 +372,10 @@
   20%, 24%, 55% {
     opacity: 0.95;
   }
+}
+.crt-content {
+  text-shadow: 0 0 3px rgba(0, 255, 0, 0.6), 0 0 6px rgba(0, 255, 0, 0.4);
+  filter: contrast(1.12) brightness(1.03) drop-shadow(0 0 3px rgba(0, 255, 0, 0.5));
 }
 @property --tw-rotate-x {
   syntax: "*";

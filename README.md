@@ -1,3 +1,5 @@
+![Matrix](https://i.pinimg.com/originals/b4/e3/71/b4e371619042d1e80918d09904e90f7d.gif)
+
 # Cipher App
 
 A simple web application for encrypting and decrypting text using various classical ciphers (Affine, Hill, Permutation, Shift, Substitution, Vigenère).
@@ -54,7 +56,7 @@ Jika ada kendala, silakan buka issue di repository ini.
 
 ## ⚙️ Tech Stack 
 
-<p align="center">
+<p align="left">
    <a href="https://www.python.org/" target="_blank">
       <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
    </a>
@@ -71,11 +73,6 @@ Jika ada kendala, silakan buka issue di repository ini.
       <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"/>
    </a>
 </p>
-
-<div align="center">
-   <b>Python (Flask)</b> &nbsp;|&nbsp; <b>Tailwind CSS</b> &nbsp;|&nbsp; <b>HTML</b> &nbsp;|&nbsp; <b>JavaScript</b>
-</div>
-
 
 
 | [<img src="https://github.com/RafiEnhan.png" width="100px"><br><sub><b>Rafi Enhan</b></sub>](https://github.com/RafiEnhan) | [<img src="https://github.com/rayhanbss.png" width="100px"><br><sub><b>Rayhan Bagus Sadewa</b></sub>](https://github.com/rayhanbss) | [<img src="https://github.com/RifqiMakarim.png" width="100px"><br><sub><b>Rifqi Makarim</b></sub>](https://github.com/RifqiMakarim) |
