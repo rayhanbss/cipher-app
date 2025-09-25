@@ -112,15 +112,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (cipher === 'shift-cipher') {
             keyInput.value = '3'; // Default shift for Shift cipher
         } else if (cipher === 'substitution-cipher') {
-            keyInput.value = '3'; // Default shift for Substitution cipher
+            keyInput.value = 'qwertyuiopasdfghjklzxcvbnm'; // Default shift for Substitution cipher
         } else if (cipher === 'affine-cipher') {
-            keyInput.value = '3'; // Default shift for Affine cipher
+            keyInput.value = '5,8'; // Default key for Affine cipher (a=5, b=8)
         } else if (cipher === 'vigenere-cipher') {
             keyInput.value = 'KUNCI'; // Default key for Vigenère cipher
         } else if (cipher == 'hill-cipher') {
             keyInput.value = "GYBNQKURP"; // Default key for Hill cipher
         } else if (cipher === 'permutation-cipher') {
-            keyInput.value = '3142'; // Default key for Permutation cipher
+            keyInput.value = '3,1,4,2'; // Default key for Permutation cipher 
         } else {
             keyInput.value = ''; // Clear key for other ciphers
         }
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hint = 'For Shift Cipher, key must be an integer. (e.g. 3)';
                 break;
             case 'substitution-cipher':
-                hint = 'For Substitution Cipher, key must be a 26-letter permutation of the alphabet. (e.g. QWERTYUIOPASDFGHJKLZXCVBNM)';
+                hint = 'For Substitution Cipher, key must be a 26-letter permutation of the alphabet. (e.g. qwertyuiopasdfghjklzxcvbnm)';
                 break;
             case 'affine-cipher':
                 hint = 'For Affine Cipher, key must be two integers a,b (e.g. 5,8).';
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hint = 'For Hill Cipher, key must be a string representing a square matrix (e.g. GACT for 2x2).';
                 break;
             case 'permutation-cipher':
-                hint = 'For Permutation Cipher, key must be a permutation of numbers (e.g. 3142).';
+                hint = 'For Permutation Cipher, key must be a permutation of numbers, separated by commas (e.g. 3,1,4,2).';
                 break;
             default:
                 hint = '';
@@ -184,7 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     input_text,
                     key,
                     cipher_function,
-                    mode
+                    mode,
+                    is_bytes: false
                 })
             });
             const data = await response.json();
@@ -226,10 +227,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const key = keyInput.value;
         const cipher_function = cipherSelect.value;
         const mode = getEncryptMode();
-        // Read file as text
+        // Read file as ArrayBuffer for binary support
         const reader = new FileReader();
         reader.onload = async function(e) {
-            const input_text = e.target.result;
+            const arrayBuffer = e.target.result;
+            // Convert ArrayBuffer to base64
+            function arrayBufferToBase64(buffer) {
+                let binary = '';
+                const bytes = new Uint8Array(buffer);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return btoa(binary);
+            }
+            const input_bytes_b64 = arrayBufferToBase64(arrayBuffer);
             try {
                 const response = await fetch('/execute', {
                     method: 'POST',
@@ -237,10 +249,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        input_text,
+                        input_bytes_b64,
                         key,
                         cipher_function,
-                        mode
+                        mode,
+                        is_bytes: true
                     })
                 });
                 const data = await response.json();
@@ -248,12 +261,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 const fileOutputInput = document.getElementById('file-output');
                 let baseName = file.name.replace(/(\.[^.]*)?$/, '');
                 let ext = file.name.match(/\.[^\.]+$/);
-                ext = ext ? ext[0] : '.txt';
+                ext = ext ? ext[0] : '.bin';
                 let suffix = mode === 'decrypt' ? '_decrypt' : '_encrypt';
                 let outputFileName = baseName + suffix + ext;
                 if (fileOutputInput) fileOutputInput.value = outputFileName;
-                // Store blob and filename for download
-                fileOutputInput._blob = new Blob([data.output_text], { type: 'text/plain' });
+                // Decode base64 output to ArrayBuffer
+                function base64ToArrayBuffer(base64) {
+                    const binary_string = atob(base64);
+                    const len = binary_string.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binary_string.charCodeAt(i);
+                    }
+                    return bytes.buffer;
+                }
+                let blob;
+                if (data.output_bytes_b64) {
+                    blob = new Blob([base64ToArrayBuffer(data.output_bytes_b64)]);
+                } else {
+                    // fallback for text output
+                    blob = new Blob([data.output_text], { type: 'text/plain' });
+                }
+                fileOutputInput._blob = blob;
                 fileOutputInput._filename = outputFileName;
                 // Enable download button
                 const saveFileBtn = document.getElementById('save-file');
@@ -262,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Error executing cipher on file.');
             }
         };
-        reader.readAsText(file);
+        reader.readAsArrayBuffer(file);
     }
 
     // Attach download/execute event for main button
