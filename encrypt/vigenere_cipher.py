@@ -23,3 +23,18 @@ def vigenere_encrypt(text, key):
             result += char
             
     return result
+
+def vigenere_encrypt_file(data_bytes, key):
+    key_bytes = key.encode('utf-8')
+    if not key_bytes:
+        raise ValueError("Kunci tidak boleh kosong.")
+    
+    result_bytes = bytearray()
+    key_len = len(key_bytes)
+    
+    for i, byte in enumerate(data_bytes):
+        key_byte = key_bytes[i % key_len]
+        new_byte = (byte + key_byte) % 256
+        result_bytes.append(new_byte)
+        
+    return bytes(result_bytes)
