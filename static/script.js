@@ -17,15 +17,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Helper to get encrypt/decrypt mode
     function getEncryptMode() {
-    // File input Browse button triggers file input
+        return encryptRadio && encryptRadio.checked ? 'encrypt' : 'decrypt';
+    }
+
+    // File input Browse button triggers file input (fix double popup)
     const fileInput = document.getElementById('file-input');
     const loadFileBtn = document.getElementById('load-file');
     if (fileInput && loadFileBtn) {
-        loadFileBtn.addEventListener('click', function() {
+        // Remove any previous event listeners before adding a new one
+        loadFileBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default button behavior
             fileInput.click();
-        });
-    }
-        return encryptRadio && encryptRadio.checked ? 'encrypt' : 'decrypt';
+        },); // Only allow the event to be attached once
     }
     // Input type toggle (text/file)
     const inputTypeSelect = document.getElementById('inputType');
@@ -110,19 +113,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function defaultKey(){
         const cipher = cipherSelect.value;
         if (cipher === 'shift-cipher') {
-            keyInput.value = '3'; // Default shift for Shift cipher
+            keyInput.value = '3';
         } else if (cipher === 'substitution-cipher') {
-            keyInput.value = 'qwertyuiopasdfghjklzxcvbnm'; // Default shift for Substitution cipher
+            if (inputTypeSelect.value === 'text') {
+            keyInput.value = 'qwertyuiopasdfghjklzxcvbnm';
+            } else {
+            keyInput.value = '1';
+            }
         } else if (cipher === 'affine-cipher') {
-            keyInput.value = '5,8'; // Default key for Affine cipher (a=5, b=8)
+            keyInput.value = '5,8';
         } else if (cipher === 'vigenere-cipher') {
-            keyInput.value = 'KUNCI'; // Default key for Vigenère cipher
+            keyInput.value = 'KUNCI';
         } else if (cipher == 'hill-cipher') {
-            keyInput.value = "GYBNQKURP"; // Default key for Hill cipher
+            keyInput.value = "GYBNQKURP";
         } else if (cipher === 'permutation-cipher') {
-            keyInput.value = '3,1,4,2'; // Default key for Permutation cipher 
+            keyInput.value = '3,1,4,2';
         } else {
-            keyInput.value = ''; // Clear key for other ciphers
+            keyInput.value = ''; 
         }
     }
 
@@ -136,7 +143,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 hint = 'For Shift Cipher, key must be an integer. (e.g. 3)';
                 break;
             case 'substitution-cipher':
-                hint = 'For Substitution Cipher, key must be a 26-letter permutation of the alphabet. (e.g. qwertyuiopasdfghjklzxcvbnm)';
+                if (inputTypeSelect.value === 'file') {
+                    hint = 'For Substitution Cipher with file input, key must be an integer (e.g. 1).';
+                    break;
+                } else {
+                    hint = 'For Substitution Cipher, key must be a 26-letter permutation of the alphabet. (e.g. qwertyuiopasdfghjklzxcvbnm)';
+                }
                 break;
             case 'affine-cipher':
                 hint = 'For Affine Cipher, key must be two integers a,b (e.g. 5,8).';
@@ -145,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hint = 'For Vigenère Cipher, key must be a word (e.g. KEY).';
                 break;
             case 'hill-cipher':
-                hint = 'For Hill Cipher, key must be a string representing a square matrix (e.g. GACT for 2x2).';
+                hint = 'For Hill Cipher, key must be a string representing a square matrix (e.g. GYBNQKURP for 3x3).';
                 break;
             case 'permutation-cipher':
                 hint = 'For Permutation Cipher, key must be a permutation of numbers, separated by commas (e.g. 3,1,4,2).';
