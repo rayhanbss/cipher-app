@@ -116,9 +116,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (cipher === 'affine-cipher') {
             keyInput.value = '5,8'; // Default key for Affine cipher (a=5, b=8)
         } else if (cipher === 'vigenere-cipher') {
-            keyInput.value = 'KEY'; // Default key for Vigenère cipher
+            keyInput.value = 'KUNCI'; // Default key for Vigenère cipher
         } else if (cipher == 'hill-cipher') {
-            keyInput.value = 'GACT'; // Default key for Hill cipher
+            keyInput.value = "GYBNQKURP"; // Default key for Hill cipher
         } else if (cipher === 'permutation-cipher') {
             keyInput.value = '3,1,4,2'; // Default key for Permutation cipher 
         } else {
