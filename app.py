@@ -2,13 +2,20 @@
 from flask import Flask, render_template, request, jsonify
 import sys
 import os
+
 sys.path.append(os.path.join(os.path.dirname(__file__), 'encrypt'))
 sys.path.append(os.path.join(os.path.dirname(__file__), 'decrypt'))
+
 from encrypt.shift_cipher import shift_cipher as shift_cipher_encrypt
+from encrypt.vigenere_cipher import vigenere_encrypt
+from encrypt.hill_cipher import hill_encrypt
+
 from decrypt.shift_cipher import shift_cipher_decrypt
+from decrypt.vigenere_cipher import vigenere_decrypt
+from decrypt.hill_cipher import hill_decrypt
+
 
 app = Flask(__name__)
-
 
 @app.route("/")
 def home():
@@ -27,9 +34,9 @@ def execute_cipher(function, text, key):
         case "affine-cipher":
             return "Affine cipher not implemented"
         case "vigenere-cipher":
-            return "Vigenère cipher not implemented"
+            return vigenere_decrypt(text, key) if mode == 'decrypt' else vigenere_encrypt(text, key)
         case "hill-cipher":
-            return "Hill cipher not implemented"
+             return hill_decrypt(text, key) if mode == 'decrypt' else hill_encrypt(text, key)
         case "permutation-cipher":
             return "Permutation cipher not implemented"
         case _:
