@@ -20,6 +20,6 @@ if [ -f package.json ]; then
 fi
 
 # 4. Run Tailwind in watch mode (optional, comment out if not needed)
-npx tailwindcss -i ./static/src/input.css -o ./static/dist/output.css --watch
+npx tailwindcss -i ./static/input.css -o ./static/output.css --watch
 
 echo "Setup complete! Activate your venv with: source .venv/bin/activate"

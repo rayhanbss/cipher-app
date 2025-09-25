@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@keyframes loop-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+}
+
+
+.animate-loop-scroll {
+    display: flex;
+    min-width: 200%;
+    animation: loop-scroll 20s linear infinite;
+}
+
+.animate-loop-scroll > div {
+    width: 50%;
+}
+
+.paused {
+    animation-play-state: paused;
+}
+
+/* CRT Scanlines */
+.crt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Flicker */
+.crt {
+    animation: crt-flicker 2s infinite;
+}
+
+@keyframes crt-flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    }
+    20%, 24%, 55% {
+    opacity: 0.95;
+    }
+}
+
+/* Slight blur + glow */
+/* .crt-content {
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.6),
+                 0 0 6px rgba(0, 255, 0, 0.4);
+    filter: contrast(1.12) brightness(1.03) drop-shadow(0 0 3px rgba(0, 255, 0, 0.5));
+} */
