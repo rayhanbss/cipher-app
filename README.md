@@ -53,4 +53,4 @@ Jika ada kendala, silakan buka issue di repository ini.
 ## 👩‍💻 Tim Pengembang
 
 | [<img src="https://github.com/RafiEnhan.png" width="100px"><br><sub><b>Rafi Enhan</b></sub>](https://github.com/RafiEnhan) | [<img src="https://github.com/rayhanbss.png" width="100px"><br><sub><b>Rayhan Bagus Sadewa</b></sub>](https://github.com/rayhanbss) | [<img src="https://github.com/RifqiMakarim.png" width="100px"><br><sub><b>Rifqi Makarim</b></sub>](https://github.com/RifqiMakarim) |
-| :---: | :---: | :---: | :---: |
+| :---: | :---: | :---: |
