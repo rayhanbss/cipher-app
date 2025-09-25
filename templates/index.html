@@ -2,11 +2,115 @@
 <html>
 <head>
     <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
-    <title>Cipher App</title>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0
+    <meta charset="UTF-8">
+    <title>cipher App</title>
 </head>
-<body>
-    <div>
-        <h1 class="text-4xl font-bold mb-4 text-sky-600">Hello, World!</h1>
+<body class="w-full h-screen bg-stone-900">
+    <div class="relative flex flex-col crt h-full p-8 item center justify-between">
+        <header class="crt-content flex items-center justify-center py-2 text-green-500">
+            <h1 class="text-lg font-semibold font-mono text-center">Cipher App</h1>
+        </header>
+        <main class="content crt-content w-full h-[50%] flex gap-12">
+            <div class="input-container flex flex-col gap-4 w-2/5 h-full">
+                <div class="flex items-center justify-between">
+                    <h4 class="font-mono text-green-500">Input Type</h4>
+                    <select id="inputType" class="crt-content border-2 w-1/6 item-center px-4 border-green-500 text-green-500">
+                        <option value="text">Text</option>
+                        <option value="file">File</option>
+                    </select>
+                </div>
+                <textarea 
+                    name="input-text" 
+                    id="input-text" 
+                    class="crt-content h-full border-2 px-2 border-green-500 text-green-500 focus:outline-none focus:border-green-500 resize-none scrollbar-thin scrollbar-thumb-green-700 scrollbar-track-stone-800"
+                    spellcheck="false"
+                >Lorem</textarea>
+                <div id="text-type" class="text-type crt-content flex items-center gap-12 text-green-500 focus:outline-none">
+                    <div>
+                        <input type="radio" id="input-plaintext-selector" name="input-text-type" class="accent-green-500 bg-stone-900 border-green-500 focus:ring-green-500 cursor-pointer ml-1 font-mono" checked></input>
+                        <label for="input-plaintext-selector" class="cursor-pointer ml-1 font-mono">Plaintext</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="input-binary-input" name="input-text-type" class="accent-green-500 bg-stone-900 border-green-500 focus:ring-green-500" ></input>
+                        <label for="input-binary-input" class="cursor-pointer ml-1 font-mono">Binary</label>
+                    </div>
+                </div>
+                <div class="file-input flex item-center justify-between hidden">
+                    <input type="file" id="file-input" class="crt-content border-2 px-2 border-green-500 text-green-500 focus:outline-none focus:border-green-500 resize-none scrollbar-thin scrollbar-thumb-green-700 scrollbar-track-stone-800 w-full" />
+                    <button id="load-file" type="button" class="crt-content border-2 w-1/6 item-center justify-between border-green-500 text-green-500 cursor-pointer ml-2">Browse</button>
+                </div>
+            </div>
+            <div class="chiper-container flex flex-col gap-4 w-1/5 h-full">
+                <h4 class="font-mono text-green-500">Function</h4>
+                <select id="inputType" class="crt-content border-2 px-2 border-green-500 text-green-500">
+                    <option value="shift-cipher">Shift Cipher</option>
+                    <option value="substitution-cipher">Substitution Cipher</option>
+                    <option value="affine-cipher">Affine Cipher</option>
+                    <option value="vigenere-cipher">Vigenere Cipher</option>
+                    <option value="hill-cipher">Hill Cipher</option>
+                    <option value="permutation-cipher">Permutation Cipher</option>
+                </select>
+                <h4 class="font-mono text-green-500">Key</h4>
+                <input type="text" id="key-input" class="crt-content border-2 px-2 border-green-500 text-green-500 focus:outline-none focus:border-green-500 resize-none scrollbar-thin scrollbar-thumb-green-700 scrollbar-track-stone-800" />
+                <div>
+                    <h4 class="key-hint font-mono text-green-500">For Shift Cipher, key must be an integer.</h4>
+                </div>
+                <div id="encrypt-options" class="crt-content flex items-center gap-12 text-green-500 focus:outline-none">
+                    <div>
+                        <input type="radio" id="encrypt-selector" name="encrypt-type" class="accent-green-500 bg-stone-900 border-green-500 focus:ring-green-500 cursor-pointer ml-1 font-mono" checked>
+                        <label for="encrypt-selector" id="encrypt-label" class="cursor-pointer ml-1 font-mono">Encrypt</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="decrypt-input" name="encrypt-type" class="accent-green-500 bg-stone-900 border-green-500 focus:ring-green-500" >
+                        <label for="decrypt-input" id="decrypt-label" class="cursor-pointer ml-1 font-mono">Decrypt</label>
+                    </div>
+                </div>
+                <button class="execute crt-content border-2 border-green-500 text-green-500 cursor-pointer">Download Result</button>
+            </div>
+            <div class="output-container flex flex-col gap-4 w-2/5 h-full">
+                <h4 class="font-mono text-green-500">Output</h4>
+                <textarea 
+                    name="output-text" 
+                    id="output-text" 
+                    class="crt-content h-full border-2 px-2 border-green-500 text-green-500 focus:outline-none focus:border-green-500 resize-none scrollbar-thin scrollbar-thumb-green-700 scrollbar-track-stone-800"
+                    spellcheck="false"
+                ></textarea>
+                <div id="text-type" class="text-type crt-content flex items-center gap-12 text-green-500 focus:outline-none">
+                    <div>
+                        <input type="radio" id="output-plaintext-selector" name="output-text-type" class="accent-green-500 bg-stone-900 border-green-500 focus:ring-green-500 cursor-pointer ml-1 font-mono" checked></input>
+                        <label for="output-plaintext-selector" class="cursor-pointer ml-1 font-mono">Plaintext</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="output-binary-input" name="output-text-type" class="accent-green-500 bg-stone-900 border-green-500 focus:ring-green-500" ></input>
+                        <label for="output-binary-input" class="cursor-pointer ml-1 font-mono">Binary</label>
+                    </div>
+                </div>
+                <div class="file-output flex item-center justify-between hidden">
+                    <input type="text" id="file-output" class="crt-content border-2 px-2 border-green-500 text-green-500 focus:outline-none focus:border-green-500 resize-none scrollbar-thin scrollbar-thumb-green-700 scrollbar-track-stone-800 w-full" disabled />
+                    <button id="save-file" class="crt-content border-2 w-1/6 item-center justify-between border-green-500 text-green-500 cursor-pointer ml-2">Download</button>
+                </div>
+            </div>
+        </main>
+        <footer class="flex crt-content w-full overflow-hidden group">
+            <div class="flex animate-loop-scroll w-[200%] min-w-screen group-hover:paused items-center">
+                    <ul class="flex w-full justify-between whitespace-nowrap text-green-500 text-center font-mono">
+                        <li class="inline-block font-bold">created by group 13</li>
+                        <li class="inline-block">rafi enhan [L0123114]</li>
+                        <li class="inline-block">rayhan bagus sadewa [L0123119]</li>
+                        <li class="inline-block">rifqi makarim [L0123122]</li>
+                        <li class="inline-block w-[0px]"></li>
+                    </ul>
+                    <ul class="flex w-full justify-between whitespace-nowrap text-green-500 text-center font-mono">
+                        <li class="inline-block font-bold">created by group 13</li>
+                        <li class="inline-block">rafi enhan [L0123114]</li>
+                        <li class="inline-block">rayhan bagus sadewa [L0123119]</li>
+                        <li class="inline-block">rifqi makarim [L0123122]</li>
+                        <li class="inline-block w-[0px]"></li>
+                    </ul>
+            </div>
+        </footer>
     </div>
 </body>
 </html>
