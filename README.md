@@ -2,7 +2,7 @@
 
 A simple web application for encrypting and decrypting text using various classical ciphers (Affine, Hill, Permutation, Shift, Substitution, Vigenère).
 
-## Cara Menjalankan Aplikasi
+## 🚀 Cara Menjalankan Aplikasi
 
 1. **Clone repository ini** (jika belum):
    ```bash
@@ -29,7 +29,7 @@ A simple web application for encrypting and decrypting text using various classi
    npx tailwindcss -i ./static/input.css -o ./static/output.css --watch
    ```
 
-## Cara Menggunakan Aplikasi
+## 📝 Cara Menggunakan Aplikasi
 
 1. Buka browser dan akses `http://127.0.0.1:5000/`.
 2. Pilih jenis cipher yang ingin digunakan.
@@ -38,7 +38,7 @@ A simple web application for encrypting and decrypting text using various classi
 5. Klik tombol "Encrypt" untuk mengenkripsi atau "Decrypt" untuk mendekripsi.
 6. Hasil akan muncul di field ouput.
 
-## Daftar Cipher yang Didukung
+## 🔐 Daftar Cipher yang Didukung
 - Affine Cipher
 - Hill Cipher
 - Permutation Cipher
@@ -50,7 +50,33 @@ A simple web application for encrypting and decrypting text using various classi
 
 Jika ada kendala, silakan buka issue di repository ini.
 
-## 👩‍💻 Tim Pengembang
+
+
+## ⚙️ Tech Stack 
+
+<p align="center">
+   <a href="https://www.python.org/" target="_blank">
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+   </a>
+   <a href="https://flask.palletsprojects.com/" target="_blank">
+      <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask"/>
+   </a>
+   <a href="https://tailwindcss.com/" target="_blank">
+      <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"/>
+   </a>
+   <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">
+      <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/>
+   </a>
+   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
+      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"/>
+   </a>
+</p>
+
+<div align="center">
+   <b>Python (Flask)</b> &nbsp;|&nbsp; <b>Tailwind CSS</b> &nbsp;|&nbsp; <b>HTML</b> &nbsp;|&nbsp; <b>JavaScript</b>
+</div>
+
+
 
 | [<img src="https://github.com/RafiEnhan.png" width="100px"><br><sub><b>Rafi Enhan</b></sub>](https://github.com/RafiEnhan) | [<img src="https://github.com/rayhanbss.png" width="100px"><br><sub><b>Rayhan Bagus Sadewa</b></sub>](https://github.com/rayhanbss) | [<img src="https://github.com/RifqiMakarim.png" width="100px"><br><sub><b>Rifqi Makarim</b></sub>](https://github.com/RifqiMakarim) |
 | :---: | :---: | :---: |
