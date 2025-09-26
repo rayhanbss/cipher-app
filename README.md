@@ -2,7 +2,8 @@
 
 # Cipher App
 
-A simple web application for encrypting and decrypting text using various classical ciphers (Affine, Hill, Permutation, Shift, Substitution, Vigenère).
+A simple flask web application for encrypting and decrypting text and files using various classical ciphers (Affine, Hill, Permutation, Shift, Substitution, Vigenère). Created for Cryptography Course 2025.
+
 
 ## 🚀 Cara Menjalankan Aplikasi
 
