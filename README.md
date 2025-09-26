@@ -13,19 +13,38 @@ A simple flask web application for encrypting and decrypting text and files usin
    cd cipher-app
    ```
 
-2. **Install dependencies Python**
-   Pastikan Python 3 sudah terinstall. Install dependencies dengan:
+2. **Lakukan setup aplikasi**
+   Jalankan bash script untuk menginstall dependencies dan menjalankan aplikasi.
+   ```bash
+   bash ./setup.sh
+   ```
+   Aplikasi akan berjalan di `http://127.0.0.1:5000/` (atau alamat yang tertera di terminal).
+
+## 🚀 Cara Alternatif
+
+1. **(Opsional) Setup virtual environment**  
+   Jika ingin menggunakan virtual environment, buat dan aktifkan dengan perintah berikut:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate           # Untuk Linux/Mac
+   source .venv\Scripts\activate       # Untuk Windows
+   ```
+   Jika tidak, langkah ini bisa dilewati.
+
+2. **Install dependencies Python**  
+   Pastikan Python sudah terpasang. Install dependencies dengan:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Jalankan aplikasi**
+3. **Jalankan aplikasi**  
+   Jalankan aplikasi dengan:
    ```bash
    python app.py
    ```
    Aplikasi akan berjalan di `http://127.0.0.1:5000/` (atau alamat yang tertera di terminal).
 
-4. **(Opsional) Build CSS dengan Tailwind**
+4. **(Opsional) Build CSS dengan Tailwind**  
    Jika ingin mengubah style, jalankan:
    ```bash
    npm install

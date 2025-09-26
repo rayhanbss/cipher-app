@@ -18,12 +18,12 @@ if [ -f requirements.txt ]; then
     pip install -r requirements.txt
 fi
 
-# 3. Install Node.js dependencies
-if [ -f package.json ]; then
-    npm install
-fi
+# 3. Run Tailwind in watch mode (optional, comment out if not needed)
+# if [ -f package.json ]; then
+#     npm install
+#     npx tailwindcss -i ./static/input.css -o ./static/output.css --watch
+# fi
 
-# 4. Run Tailwind in watch mode (optional, comment out if not needed)
-npx tailwindcss -i ./static/input.css -o ./static/output.css --watch
+python ./app.py
 
 echo "Setup complete! Activate your venv with: source .venv/bin/activate"
