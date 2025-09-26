@@ -5,9 +5,13 @@ set -e
 
 # 1. Create and activate Python virtual environment
 if [ ! -d ".venv" ]; then
-    python3 -m venv .venv
+    python -m venv .venv
 fi
-source .venv/bin/activate
+if [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "win32"* ]]; then
+    source .venv/Scripts/activate
+else
+    source .venv/bin/activate
+fi
 
 # 2. Install Python requirements
 if [ -f requirements.txt ]; then
